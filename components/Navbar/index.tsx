@@ -22,7 +22,7 @@ const Navbar: React.FunctionComponent = () => {
             </li>
             <li>
               <Link href="/register">
-                <a>Signup</a>
+                <a>Register</a>
               </Link>
             </li>
           </ul>
