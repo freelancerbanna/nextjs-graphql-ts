@@ -1,6 +1,10 @@
 import * as React from "react";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
-import Image from "next/image";
+import { ILogin } from "interfaces";
+import { useMemo } from "react";
 
 declare global {
   namespace JSX {
@@ -14,10 +18,26 @@ declare global {
 }
 
 const Login: React.FunctionComponent = () => {
+  // validation schema for form error handling
+  let validationSchema = useMemo(
+    () =>
+      yup.object({
+        email: yup.string().required("Email is required"),
+        password: yup.string().required("Password is required"),
+      }),
+    []
+  );
+  let {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<ILogin>({
+    resolver: yupResolver(validationSchema),
+  });
   // submitting form handler
-  let handleLoginForm = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  };
+  let handleLoginForm = (data: ILogin) => {};
+
+  //
   return (
     <>
       <center>
@@ -35,7 +55,7 @@ const Login: React.FunctionComponent = () => {
               border: "1px solid #EEE",
             }}
           >
-            <form className="col s12" onSubmit={handleLoginForm}>
+            <form className="col s12" onSubmit={handleSubmit(handleLoginForm)}>
               <div className="row">
                 <div className="col s12"></div>
               </div>
@@ -45,10 +65,15 @@ const Login: React.FunctionComponent = () => {
                   <input
                     className="validate"
                     type="email"
-                    name="email"
                     id="email"
+                    {...register("email")}
                   />
                   <label htmlFor="email">Enter your email</label>
+                  {errors.email && (
+                    <span className="helper-text red-text">
+                      {errors.email?.message}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -57,10 +82,15 @@ const Login: React.FunctionComponent = () => {
                   <input
                     className="validate"
                     type="password"
-                    name="password"
                     id="password"
+                    {...register("password")}
                   />
                   <label htmlFor="password">Enter your password</label>
+                  {errors.password && (
+                    <span className="helper-text red-text">
+                      {errors.password?.message}
+                    </span>
+                  )}
                 </div>
                 <label style={{ float: "right" }}>
                   <a className="pink-text" href="#!">
