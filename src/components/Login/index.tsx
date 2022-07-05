@@ -14,6 +14,10 @@ declare global {
 }
 
 const Login: React.FunctionComponent = () => {
+  // submitting form handler
+  let handleLoginForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
   return (
     <>
       <center>
@@ -31,7 +35,7 @@ const Login: React.FunctionComponent = () => {
               border: "1px solid #EEE",
             }}
           >
-            <form className="col s12" method="post">
+            <form className="col s12" onSubmit={handleLoginForm}>
               <div className="row">
                 <div className="col s12"></div>
               </div>
